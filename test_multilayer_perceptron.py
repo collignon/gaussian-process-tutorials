@@ -6,10 +6,10 @@ def identity(x):
 
 def test_single_input_neuron():
     '''Outputs the identity of the input value.'''
-    nn = Neuron(neuron_type='input')
+    neuron = Neuron(neuron_type='input')
 
     for x in [0, -10, np.pi]:
-        assert nn.compute_output(x) == x
+        assert neuron.compute_output(x) == x
 
 def test_single_output_neuron():
     '''
@@ -17,7 +17,7 @@ def test_single_output_neuron():
     values, weighted by the connection weights.'''
 
     connection_weights = [1, -2, 1./3]
-    nn = Neuron(neuron_type='output', bias=1,
+    neuron = Neuron(neuron_type='output', bias=1,
                 connection_weights=connection_weights)
 
     input_values = [[-1, -.5, -3],
@@ -30,7 +30,7 @@ def test_single_output_neuron():
     output_values = [0, 1, 2]
 
     for x, y in zip(input_values, output_values):
-        assert nn.compute_output(x) == y
+        assert neuron.compute_output(x) == y
 
 def test_single_hidden_neuron_step():
     '''
@@ -39,7 +39,7 @@ def test_single_hidden_neuron_step():
     and passed through the activation function.'''
 
     connection_weights = [1, -2, 1./3]
-    nn = Neuron(neuron_type='hidden', bias=0,
+    neuron = Neuron(neuron_type='hidden', bias=0,
                 connection_weights=connection_weights)
 
     input_values = [[-1, -.5, -3],
@@ -52,4 +52,4 @@ def test_single_hidden_neuron_step():
     output_values = [-1, 1, 1]
 
     for x, y in zip(input_values, output_values):
-        assert nn.compute_output(x) == y
+        assert neuron.compute_output(x) == y
