@@ -5,20 +5,25 @@ import numpy as np
 class Neuron():
     def __init__(self, neuron_type, bias=None, connection_weights=None,
                  activation_function=None):
-        # Checks and default initializations
-        ## Default: zero bias, identity weights, identity activation for
-        ##  input and output neurons, step activation for hidden neurons.
+        identity = lambda x: x
+        step_function = lambda x: -1 if x < 0 else 1
+
+        # Neuron type properties
         if neuron_type not in ['input', 'hidden', 'output']:
             raise ValueError('Unknown Neuron Type %s' %(neuron_type,))
+        if neuron_type == 'input':
+            bias = 0
+            connection_weights = [1]
+            activation_function = identity
+        if neuron_type == 'output':
+            activation_function = identity
+
+        # Default initializations
         if bias is None:
             bias = 0
-        if connection_weights is None or neuron_type == 'input':
+        if connection_weights is None:
             connection_weights = [1]
-        if neuron_type != 'hidden':
-            identity = lambda x: x
-            activation_function = identity
-        if activation_function is None and neuron_type == 'hidden':
-            step_function = lambda x: -1 if x < 0 else 1
+        if activation_function is None:
             activation_function = step_function
 
         self.neuron_type = neuron_type
