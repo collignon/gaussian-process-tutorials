@@ -37,7 +37,7 @@ def test_single_output_neuron():
     layer = Layer(layer_type='output', layer_biases=[bias],
                   layer_weights=[connection_weights])
     for x, y in zip(input_values, output_values):
-        assert layer.compute_output([x]) == [y]
+        assert layer.compute_output(x) == [y]
 
 def test_single_hidden_neuron_step():
     '''
@@ -63,7 +63,7 @@ def test_single_hidden_neuron_step():
     layer = Layer(layer_type='hidden', layer_biases=[bias],
                   layer_weights=[connection_weights])
     for x, y in zip(input_values, output_values):
-        assert layer.compute_output([x]) == [y]
+        assert layer.compute_output(x) == [y]
 
 
 def test_input_layer():
@@ -85,12 +85,13 @@ def test_output_layer():
                          layer_biases=layer_biases,
                          layer_weights=layer_weights)
 
-    input_values = [[[2, 1, 4], [10, 10, 0]],
-                    [[-2, 2, -2], [2, -100, -1]]]
-    output_values = [[2, -2], [-7, -1]]
+    input_values = [[2, 1, 4], [10, 10, 0],
+                    [-2, 2, -2], [2, -100, -1]]
+    output_values = [[2, 38.9], [-10, -2],
+                     [-7, -21.2], [201.5,-1]]
 
     for x, y in zip(input_values, output_values):
-        assert output_layer.compute_output(x) == y
+        assert np.allclose(output_layer.compute_output(x), y)
 
 def test_hidden_layer():
     '''
@@ -101,13 +102,13 @@ def test_hidden_layer():
     hidden_layer = Layer(layer_type='hidden', num_neurons=2,
                          layer_biases=layer_biases,
                          layer_weights=layer_weights)
-
-    input_values = [[[2, 1, 4], [10, 10, 0]],
-                    [[-2, 2, -2], [2, -100, -1]]]
-    output_values = [[1, -1], [-1, -1]]
+    input_values = [[2, 1, 4], [10, 10, 0],
+                    [-2, 2, -2], [2, -100, -1]]
+    output_values = [[1, 1], [-1, -1],
+                     [-1, -1], [1, -1]]
 
     for x, y in zip(input_values, output_values):
-        assert hidden_layer.compute_output(x) == y
+        assert np.allclose(hidden_layer.compute_output(x), y)
 
 def test_linear_single_perceptron():
     '''Test network without hidden layer and
@@ -135,7 +136,7 @@ def test_nonlinear_single_perceptron():
     net_weights = [[[1]], [[2]]]
 
     input_values = [1, 0, -1]
-    output_values = [3, 1, 1]
+    output_values = [3, -1, -1]
 
     net = MultilayerPerceptron(
         num_layers, num_neurons, net_biases, net_weights)
@@ -147,7 +148,7 @@ def test_nonlinear_perceptron():
     unidimensional input and output.'''
     num_layers = 3
     num_neurons = [1, 3, 1]
-    net_biases = [[1, -1, 0], [2, 4, -2]]
+    net_biases = [[1, -1, 0], [10]]
     net_weights = [[[-1], [0], [1]], [[2, 4, -2]]]
 
     input_values = [1, 0, -1]
