@@ -1,5 +1,5 @@
 import numpy as np
-from multilayer_perceptron import Neuron, Layer
+from multilayer_perceptron import Neuron, Layer, MultilayerPerceptron
 
 def identity(x):
     return x
@@ -108,3 +108,52 @@ def test_hidden_layer():
 
     for x, y in zip(input_values, output_values):
         assert hidden_layer.compute_output(x) == y
+
+def test_linear_single_perceptron():
+    '''Test network without hidden layer and
+    unidimensional input and output.'''
+    num_layers = 2
+    num_neurons = [1, 1]
+    net_biases = [[2]]
+    net_weights = [[[-3]]]
+
+    input_values = [1, 0, -1]
+    output_values = [-1, 2, 5]
+
+    net = MultilayerPerceptron(
+        num_layers, num_neurons, net_biases, net_weights)
+    for x, y in zip(input_values, output_values):
+        assert net.compute_output([x]) == [y]
+
+
+def test_nonlinear_single_perceptron():
+    '''Test network with a single hidden layer with one neuron and
+    unidimensional input and output.'''
+    num_layers = 3
+    num_neurons = [1, 1, 1]
+    net_biases = [[-1],[1]]
+    net_weights = [[[1]], [[2]]]
+
+    input_values = [1, 0, -1]
+    output_values = [3, 1, 1]
+
+    net = MultilayerPerceptron(
+        num_layers, num_neurons, net_biases, net_weights)
+    for x, y in zip(input_values, output_values):
+        assert net.compute_output([x]) == [y]
+
+def test_nonlinear_perceptron():
+    '''Test network with a single hidden layer with three neurons and
+    unidimensional input and output.'''
+    num_layers = 3
+    num_neurons = [1, 3, 1]
+    net_biases = [[1, -1, 0], [2, 4, -2]]
+    net_weights = [[[-1], [0], [1]], [[2, 4, -2]]]
+
+    input_values = [1, 0, -1]
+    output_values = [6, 6, 10]
+
+    net = MultilayerPerceptron(
+        num_layers, num_neurons, net_biases, net_weights)
+    for x, y in zip(input_values, output_values):
+        assert net.compute_output([x]) == [y]
