@@ -12,7 +12,7 @@ def test_single_input_neuron():
 
     layer = Layer(layer_type='input')
     for x in [0, -10, np.pi]:
-        assert layer.compute_output(x) == [x]
+        assert layer.compute_output([x]) == [x]
 
 def test_single_output_neuron():
     '''
@@ -37,7 +37,7 @@ def test_single_output_neuron():
     layer = Layer(layer_type='output', layer_biases=[bias],
                   layer_weights=[connection_weights])
     for x, y in zip(input_values, output_values):
-        assert layer.compute_output(x) == [y]
+        assert layer.compute_output([x]) == [y]
 
 def test_single_hidden_neuron_step():
     '''
@@ -63,7 +63,7 @@ def test_single_hidden_neuron_step():
     layer = Layer(layer_type='hidden', layer_biases=[bias],
                   layer_weights=[connection_weights])
     for x, y in zip(input_values, output_values):
-        assert layer.compute_output(x) == [y]
+        assert layer.compute_output([x]) == [y]
 
 
 def test_input_layer():

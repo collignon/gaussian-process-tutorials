@@ -37,3 +37,41 @@ class Neuron():
         '''
         combined_input = self.bias + self.connection_weights.dot(x)
         return self.activation_function(combined_input)
+
+class Layer():
+    def __init__(self, layer_type, num_neurons=None, layer_biases=None,
+                 layer_weights=None, activation_function=None):
+
+        # Defaul Initializations
+        if num_neurons is None:
+            num_neurons = 1
+        if layer_biases is None:
+            layer_biases = [None] * num_neurons
+        if layer_weights is None:
+            layer_weights = [None] * num_neurons
+
+        # Checks
+        if len(layer_biases) != num_neurons:
+            raise ValueError(
+                'Mismatch between number of neurons and biases')
+        if len(layer_weights) != num_neurons:
+            raise ValueError(
+                'Mismatch between number of neurons and weights')
+
+        # Attribute Initializations
+        self.num_neurons = num_neurons
+        self.layer_biases = layer_biases
+        self.layer_weights = layer_weights
+        self.activation_function = activation_function
+        self.neurons = [
+            Neuron(layer_type, layer_biases[i], layer_weights[i],
+                   activation_function) for i in range(num_neurons)]
+
+    def compute_output(self, x):
+        # Checks
+        if len(x) != self.num_neurons:
+            raise ValueError(
+                'Input dimensionality does not match number of neurons')
+
+        return [self.neurons[i].compute_output(x[i])
+                for i in range(self.num_neurons)]
